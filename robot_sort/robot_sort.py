@@ -92,58 +92,51 @@ class SortingRobot:
         """
         return self._light == "ON"
 
+    def compare_right_side_value(self):
+        self.swap_item()
+        self.move_right()
+        self.compare_item()
+        if self.compare_item() == 1:
+            self.swap_item()
+            self.set_light_on()
+            self.move_left()
+            self.swap_item()
+            self.move_right()
+        else:
+            self.move_left()
+            self.swap_item()
+            self.move_right()
+
+    def back_to_start(self):
+        if self.move_right() is False and self.light_is_on() is True:
+            while self.can_move_left() is True:
+                self.move_left()
+                self.set_light_off()
+
     def sort(self):
         """
         Sort the robot's list.
         """
-# Robot can only function while it is on
-# Robot can only hold one item at a time
-# if the object in front of the robot has greater value
-# than the object the robot is holding, compare returns 1, 
-# otherwise it returns -1
 
-## activate robot
-        robot.set_light_on()
-        robot.swap_item()
-        robot.move_right()
-        while robot.compare_item() == 1:
-            robot.move_right()
-            robot.compare_item()
-            if robot.can_move_right() == False:
-                robot.swap_item()
-                robot.move_left()
-                while robot.can_move_left() == True:
-                    robot.move_left()
-                    if robot.can_move_left() == False:
-                        robot.set_light_off()
-        # robot.move_right()
-        # robot.swap_item()
-## set condition for sort
-        # while robot.can_move_right is True:
-        #     robot.compare_item()
-        #     if robot.compare_item() == 1:
-        #         robot.swap_item()
-        #         robot.move_right()
-        # if robot.can_move_right is False:
-        #     while robot.can_move_left is True:
-        #         robot.compare_item()
-        #         if robot.compare_item() == 1:
-        #             robot.swap_item()
-        #             robot.move_right()
-        #         robot.move_left()
-        #         if robot.move_left is False:
-        #             robot.set_light_off()
-
-## deactivate robot
-        
-
+        while self.can_move_right() is True:
+            self.compare_right_side_value()
+            if self.can_move_right() is False:
+                if self.light_is_on() is True:
+                    self.back_to_start()
+            
+## check left compares the value on the left to the value on the right,
+# the methods themselves work, but there's a bug that prevents the list from 
+# getting sorted properly. If move is made, the light turns on and when the 
+# robot gets to the end of the list, if the light is on it goes back to the front 
+# of the list, if the light is off when the robot gets to the end of the list, the 
+# program ends
 
 if __name__ == "__main__":
     # Test our your implementation from the command line
     # with `python robot_sort.py`
 
-    # l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
-    l = [5, 4, 3, 2, 1]
+    l = [15, 41, 58, 49, 26, 4, 28, 8, 61, 60, 65, 21, 78, 14, 35, 90, 54, 5, 0, 87, 82, 96, 43, 92, 62, 97, 69, 94, 99, 93, 76, 47, 2, 88, 51, 40, 95, 6, 23, 81, 30, 19, 25, 91, 18, 68, 71, 9, 66, 1, 45, 33, 3, 72, 16, 85, 27, 59, 64, 39, 32, 24, 38, 84, 44, 80, 11, 73, 42, 20, 10, 29, 22, 98, 17, 48, 52, 67, 53, 74, 77, 37, 63, 31, 7, 75, 36, 89, 70, 34, 79, 83, 13, 57, 86, 12, 56, 50, 55, 46]
+    # l = [5, 4, 3, 2, 1]
     robot = SortingRobot(l)
 
     robot.sort()
